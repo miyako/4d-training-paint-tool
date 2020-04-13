@@ -1,36 +1,0 @@
-###########################################################
-
-# method source for paint-tool-0
-
-	the result is paint-tool-1
-
-###########################################################
-
-Get_Url (create this method)
-
-$path:=Get 4D folder(Current Resources folder)+"paint-tool.html"ASSERT(Test path name($path)=Is a document)$0:="file://"+Convert path system to POSIX($path;*)
-
-###########################################################
-
-ON_STANDALONE
-
-OBJECT SET VISIBLE(*;"Canvas";False)OBJECT SET VISIBLE(*;"Icon";True)
-
-###########################################################
-
-ON_WIDGET
-
-$content:=WA Get page content(*;"Canvas")If (Length($content)=0)$url:=Get_Url WA OPEN URL(*;"Canvas";$url)End if 
-###########################################################
-
-ON_DOCUMENT_READY
-
-ARRAY TEXT($patterns;1)ARRAY BOOLEAN($access;1)$patterns{1}:="http://*"$access{1}:=FalseWA SET URL FILTERS(*;OBJECT Get name(Object current);$patterns;$access)C_LONGINT($width;$height)OBJECT GET SUBFORM CONTAINER SIZE($width;$height)OBJECT MOVE(*;"Canvas";0;0;$width;$height;*)OBJECT MOVE(*;"Icon";0;0;$width;$height;*)WA EXECUTE JAVASCRIPT FUNCTION(*;"Canvas";"setCanvasSize";*;String($width);String($height))
-
-###########################################################
-
-ON_HREF_CHANGE
-
-$url:=WA Get last filtered URL(*;OBJECT Get name(Object current))
-
-###########################################################
